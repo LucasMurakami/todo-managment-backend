@@ -20,14 +20,14 @@ public class ToDoServiceImplementation implements ToDoService {
 
     private ToDoRepository toDoRepository;
     @Override
-    public ToDoDTO addTodo(ToDoDTO toDoDTO) {
+    public ToDoDTO addToDo(ToDoDTO toDoDTO) {
         ToDo toDo = modelMapper.map(toDoDTO, ToDo.class);
         ToDo savedToDo = toDoRepository.save(toDo);
         return modelMapper.map(savedToDo, ToDoDTO.class);
     }
 
     @Override
-    public ToDoDTO getTodo(Long id) {
+    public ToDoDTO getToDo(Long id) {
         ToDo toDo = toDoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("To Do not found with id:" + id)
         );
@@ -42,7 +42,7 @@ public class ToDoServiceImplementation implements ToDoService {
     }
 
     @Override
-    public ToDoDTO updateTodo(ToDoDTO toDoDTO, Long id) {
+    public ToDoDTO updateToDo(ToDoDTO toDoDTO, Long id) {
         ToDo toDo = toDoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("To Do not found with id:" + id)
         );
@@ -57,5 +57,28 @@ public class ToDoServiceImplementation implements ToDoService {
                 () -> new ResourceNotFoundException("To Do not found with id:" + id)
         );
         toDoRepository.deleteById(id);
+    }
+
+    @Override
+    public ToDoDTO completeToDo(Long id) {
+
+        ToDo toDo = toDoRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("To Do not found with id:" + id)
+        );
+
+        toDo.setCompleted(Boolean.TRUE);
+        ToDo updatedTodo = toDoRepository.save(toDo);
+        return modelMapper.map(updatedTodo, ToDoDTO.class);
+    }
+
+    @Override
+    public ToDoDTO incompleteToDo(Long id) {
+        ToDo toDo = toDoRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("To Do not found with id:" + id)
+        );
+
+        toDo.setCompleted(Boolean.FALSE);
+        ToDo updatedTodo = toDoRepository.save(toDo);
+        return modelMapper.map(updatedTodo, ToDoDTO.class);
     }
 }

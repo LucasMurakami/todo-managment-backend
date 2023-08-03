@@ -19,14 +19,14 @@ public class ToDoController {
     // Build ADD To_Do REST API
     @PostMapping()
     public ResponseEntity<ToDoDTO> createToDo(@RequestBody ToDoDTO toDoDTO) {
-        ToDoDTO savedToDoDTO = toDoServiceImplementation.addTodo(toDoDTO);
+        ToDoDTO savedToDoDTO = toDoServiceImplementation.addToDo(toDoDTO);
         return new ResponseEntity<>(savedToDoDTO, HttpStatus.CREATED);
     }
 
     // Build GET To_Do REST API
     @GetMapping("/{id}")
     public ResponseEntity<ToDoDTO> getToDo(@PathVariable("id") Long toDoId) {
-        ToDoDTO toDoDTO = toDoServiceImplementation.getTodo(toDoId);
+        ToDoDTO toDoDTO = toDoServiceImplementation.getToDo(toDoId);
         return ResponseEntity.ok(toDoDTO);
     }
 
@@ -38,17 +38,31 @@ public class ToDoController {
     }
 
     // Build UPDATE To_Do REST API
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ToDoDTO> updateToDo(@RequestBody ToDoDTO toDoDTO, @PathVariable("id") Long toDoId) {
-        ToDoDTO updatedToDo = toDoServiceImplementation.updateTodo(toDoDTO,toDoId);
+        ToDoDTO updatedToDo = toDoServiceImplementation.updateToDo(toDoDTO,toDoId);
         return ResponseEntity.ok(updatedToDo);
     }
 
     // Build DELETE To_Do REST API
-    @DeleteMapping("{/id}")
-    public ResponseEntity<String> deleteTodo(@PathVariable("id") Long toDoId) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteToDo(@PathVariable("id") Long toDoId) {
         toDoServiceImplementation.deleteToDo(toDoId);
         return ResponseEntity.ok("ToDo deleted successfully!");
+    }
+
+    // Build (PATCH) Mark as Complete REST API
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<ToDoDTO> completeToDo(@PathVariable("id") Long toDoId) {
+        ToDoDTO updatedToDo = toDoServiceImplementation.completeToDo(toDoId);
+        return ResponseEntity.ok(updatedToDo);
+    }
+
+    // Build (PATCH) Mark as Incomplete REST API
+    @PatchMapping("/{id}/incomplete")
+    public ResponseEntity<ToDoDTO> incompleteToDo(@PathVariable("id") Long toDoId) {
+        ToDoDTO updatedToDo = toDoServiceImplementation.incompleteToDo(toDoId);
+        return ResponseEntity.ok(updatedToDo);
     }
 
 }
