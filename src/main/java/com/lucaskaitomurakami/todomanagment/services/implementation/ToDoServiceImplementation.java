@@ -46,7 +46,11 @@ public class ToDoServiceImplementation implements ToDoService {
         ToDo toDo = toDoRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("To Do not found with id:" + id)
         );
-        BeanUtils.copyProperties(toDoDTO, toDo);
+
+        toDo.setTitle(toDoDTO.getTitle());
+        toDo.setDescription(toDoDTO.getDescription());
+        toDo.setCompleted(toDoDTO.getCompleted());
+
         ToDo updatedToDo = toDoRepository.save(toDo);
         return modelMapper.map(updatedToDo, ToDoDTO.class);
     }
